@@ -1,0 +1,22 @@
+resource "account-integration" "Ansible Git" {
+  name = "Ansible Git"
+  uuid = "eaaef951-92e3-4f5d-bc64-8cc22ed11cd5"
+  category = "cm-server"
+  config = {
+    cacheEnabled = "on"
+    cm = {
+      ansibleCommandBus = "on"
+      ansibleDefaultBranch = "master"
+      ansibleGalaxyEnabled = false
+      ansibleGroupVars = "/groupvars"
+      ansibleHostVars = "/hostvars"
+      ansiblePlaybooks = "/"
+      ansibleRoles = "/roles"
+      ansibleVerbose = false
+    }
+    defaultBranch = "master"
+  }
+  integrationType = { code = "ansible" }
+  serviceUrl = "https://github.com/alahlou2k22/morpheus-ansible2"
+  type = "ansible"
+}

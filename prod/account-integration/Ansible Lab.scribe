@@ -1,0 +1,29 @@
+resource "account-integration" "Ansible Lab" {
+  name = "Ansible Lab"
+  uuid = "0e642ec6-8f7d-4784-8bd8-422364357916"
+  category = "cm-server"
+  config = {
+    ansibleCommandBus = null
+    ansibleGalaxyEnabled = null
+    ansibleGroupVars = "/groupvars"
+    ansibleHostVars = "/hostvars"
+    ansiblePlaybooks = "/"
+    ansibleRoles = "/roles"
+    ansibleVerbose = null
+    cacheEnabled = null
+    cm = {
+      ansibleCommandBus = "on"
+      ansibleDefaultBranch = "main"
+      ansibleGalaxyEnabled = false
+      ansibleGroupVars = "/groupvars"
+      ansibleHostVars = "/hostvars"
+      ansiblePlaybooks = "/"
+      ansibleRoles = "/roles"
+      ansibleVerbose = false
+    }
+    defaultBranch = "main"
+  }
+  integrationType = { code = "ansible" }
+  serviceUrl = "git@github.com:alahlou2k22/ansibletest.git"
+  type = "ansible"
+}

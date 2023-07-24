@@ -1,0 +1,15 @@
+resource "file-content" "23c24424-cb12-430d-8183-a564e81b4b26" {
+  uuid = "23c24424-cb12-430d-8183-a564e81b4b26"
+  content = <<EOFSCRIBE
+RPASS="<%=cypher.read('secret/mysql_root')%>"
+#Install MySQL
+apt update -y
+apt install mysql-server -y
+mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$RPASS';"
+#Default bind address is to localhost. Comment out to allow remote connection to database
+sed -e '/^bind/s/^/#/g' -i /etc/mysql/mysql.conf.d/mysqld.cnf 
+systemctl restart mysql.service
+EOFSCRIBE
+  dateCreated = "2023-02-28T14:12:29.000Z"
+  lastUpdated = "2023-02-28T15:42:14.000Z"
+}

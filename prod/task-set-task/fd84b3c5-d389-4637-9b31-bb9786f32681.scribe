@@ -1,0 +1,5 @@
+resource "task-set-task" "fd84b3c5-d389-4637-9b31-bb9786f32681" {
+  uuid = "fd84b3c5-d389-4637-9b31-bb9786f32681"
+  task = { name = "Install apache 2.4" }
+  taskPhase = "preProvision"
+}

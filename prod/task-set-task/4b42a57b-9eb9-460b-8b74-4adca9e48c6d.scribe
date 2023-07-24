@@ -1,0 +1,6 @@
+resource "task-set-task" "4b42a57b-9eb9-460b-8b74-4adca9e48c6d" {
+  uuid = "4b42a57b-9eb9-460b-8b74-4adca9e48c6d"
+  task = { name = "Dump Variables in Python3" }
+  taskOrder = 3
+  taskPhase = "start"
+}

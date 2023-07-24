@@ -1,0 +1,19 @@
+resource "task" "Dump Variables in Python3" {
+  name = "Dump Variables in Python3"
+  uuid = "4204effb-b19f-466d-8400-049983a9d531"
+  dateCreated = "2022-06-27T17:34:01.000Z"
+  executeTarget = "local"
+  lastUpdated = "2023-05-22T16:52:20.000Z"
+  options = [
+    {
+      optionType = { code = "pythonAdditionalPackages" }
+      value = "requests"
+    },
+    { optionType = { code = "pythonBinary" }, value = "python3.8" },
+    {
+      content = { uuid = "ecdec4c5-6c01-408a-af12-1e3b11eb3dc6" }
+      optionType = { code = "pythonScript" }
+    }
+  ]
+  taskType = { code = "jythonTask" }
+}

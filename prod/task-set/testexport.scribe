@@ -1,0 +1,13 @@
+resource "task-set" "testexport" {
+  name = "testexport"
+  uuid = "6de0073a-b605-4c61-8be4-d33331c733bb"
+  dateCreated = "2023-07-24T17:27:10.000Z"
+  labels = [ "exported" ]
+  lastUpdated = "2023-07-24T17:27:10.000Z"
+  taskSetTasks = [
+    { uuid = "4b42a57b-9eb9-460b-8b74-4adca9e48c6d" },
+    { uuid = "88c4174b-5f9f-49bb-b3f7-f63ea4ab8509" },
+    { uuid = "add4d9e4-cc13-4261-a8de-8ee4c75cfc9b" },
+    { uuid = "fd84b3c5-d389-4637-9b31-bb9786f32681" }
+  ]
+}

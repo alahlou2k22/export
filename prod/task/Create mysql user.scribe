@@ -1,0 +1,18 @@
+resource "task" "Create mysql user" {
+  name = "Create mysql user"
+  uuid = "335aa4e7-b59b-4d28-9d33-2081f606a814"
+  dateCreated = "2023-03-03T09:06:58.000Z"
+  executeTarget = "resource"
+  lastUpdated = "2023-03-03T09:06:58.000Z"
+  options = [
+    {
+      optionType = { code = "ansibleGitId" }
+      value = { name = "Ansible Lab" }
+    },
+    {
+      optionType = { code = "ansiblePlaybook" }
+      value = "create-mysql-user.yaml"
+    }
+  ]
+  taskType = { code = "ansibleTask" }
+}

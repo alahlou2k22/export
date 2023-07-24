@@ -1,0 +1,6 @@
+resource "task-set-task" "add4d9e4-cc13-4261-a8de-8ee4c75cfc9b" {
+  uuid = "add4d9e4-cc13-4261-a8de-8ee4c75cfc9b"
+  task = { code = "mysqlinstall" }
+  taskOrder = 1
+  taskPhase = "provision"
+}

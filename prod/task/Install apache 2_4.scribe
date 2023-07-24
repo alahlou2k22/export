@@ -1,0 +1,18 @@
+resource "task" "Install apache 2.4" {
+  name = "Install apache 2.4"
+  uuid = "f329d1be-0ee8-4ea6-8435-e4ea4e485f86"
+  dateCreated = "2023-04-06T08:05:26.000Z"
+  executeTarget = "resource"
+  lastUpdated = "2023-04-06T08:05:26.000Z"
+  options = [
+    {
+      optionType = { code = "ansibleGitId" }
+      value = { name = "Ansible Git" }
+    },
+    {
+      optionType = { code = "ansiblePlaybook" }
+      value = "apache-2_4"
+    }
+  ]
+  taskType = { code = "ansibleTask" }
+}

@@ -1,0 +1,5 @@
+resource "task-set-task" "88c4174b-5f9f-49bb-b3f7-f63ea4ab8509" {
+  uuid = "88c4174b-5f9f-49bb-b3f7-f63ea4ab8509"
+  task = { name = "Create mysql user" }
+  taskOrder = 2
+}
