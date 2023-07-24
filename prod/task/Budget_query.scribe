@@ -1,0 +1,15 @@
+resource "task" "Budget_query" {
+  name = "Budget_query"
+  uuid = "5c548ed2-dc97-4980-98e9-7ec778284001"
+  dateCreated = "2022-12-07T15:54:05.000Z"
+  executeTarget = "resource"
+  labels = [ "exported" ]
+  lastUpdated = "2023-07-24T17:23:00.000Z"
+  options = [
+    {
+      content = { uuid = "b0caf225-4940-4ad7-878b-c5c20047aafb" }
+      optionType = { code = "script" }
+    }
+  ]
+  taskType = { code = "winrmTask" }
+}

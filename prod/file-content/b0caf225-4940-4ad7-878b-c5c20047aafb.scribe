@@ -1,0 +1,84 @@
+resource "file-content" "b0caf225-4940-4ad7-878b-c5c20047aafb" {
+  uuid = "b0caf225-4940-4ad7-878b-c5c20047aafb"
+  content = <<EOFSCRIBE
+#! /usr/bin/pwsh
+
+<#
+    .SYNOPSIS
+        This Script queries Budget Policies and can email based off of thresholds.
+    
+    .DESCRIPTION
+        1. Queries for Enabled Budget Policies
+        2. Looks up current costs vs. budget settings
+        3. Emails user(s) based on threshold value
+     
+    .EXAMPLE
+        1. Local Shell Script Referencing a GIT Repo
+        2. Command Example:
+            pwsh -file 'path/file.ps1' -morphURL '<%=morpheus.applianceUrl%>' -serviceBearer "<%=cypher.read('secret/svcBearer')%>" -warningThreshold '<%=customOptions.warningThreshold%>'
+#>
+
+### Params ###
+Param (
+    [Parameter(Mandatory = $true)]$serviceBearer,
+    [Parameter(Mandatory = $true)]$warningThreshold,
+    [Parameter(Mandatory = $true)]$morphURL
+)
+
+$ProgressPreference = "SilentlyContinue"
+
+### Variables ###
+$Header = @{
+    "Authorization" = "BEARER $serviceBearer"
+    }
+$ContentType = 'application/json'
+$budgets = New-Object PSObject
+$instanceSum = 0
+
+### Script ###
+
+$policies = (Invoke-WebRequest -Method get -Uri ($MorphURL + $Endpoint) -Headers $Header).content | ConvertFrom-Json | Select-Object -ExpandProperty policies |
+    Select-Object id, @{n='maxPrice';e={$_.config.maxPrice}}, owner,refType, enabled, @{n='zone';e={$_.zone.id}}, @{n='site';e={$_.site.id}}
+
+$budgets = foreach ($policy in $policies) {
+    if ($policy.enabled -eq $true) {
+        if ($policy.maxPrice) {
+            $policy
+        }
+    }
+}
+
+foreach ($budget in $budgets) {
+    if ($budget.refType -eq 'ComputeZone') {
+        $zone = (Invoke-WebRequest -Method get -Uri ($MorphURL + 'api/billing/zones/' + ($budget.zone)) -Headers $Header).content | ConvertFrom-Json | Select-Object -ExpandProperty billingInfo
+        $zoneSpend = [math]::Round($zone.price)
+        $ratio = ($zoneSpend / $budget.maxPrice)
+        if ($ratio -gt $warningThreshold) {
+            write-host "Alert: Spend on Zone `"$($zone.zoneName)`" is $([math]::Round($ratio,2))" -ForegroundColor Yellow
+
+            ### Send Email ###
+            #Send-MailMessage -To email@email.com -Subject 'Cloud Spend Near Quota' -Body "Attention: The cloud `"$($zone.zoneName)`" is currently at $([math]::Round($ratio,2)).  This exceeds the warning threshold."
+        }
+    }
+    if ($budget.refType -eq 'ComputeSite') {
+        $Group = (Invoke-WebRequest -Method get -Uri ($MorphURL + 'api/groups/' + $budget.site) -Headers $Header).content | ConvertFrom-Json | Select-Object -ExpandProperty group
+        $Instances = (Invoke-WebRequest -Method get -Uri ($MorphURL + 'api/instances?max=10000&siteId=' + $budget.site) -Headers $Header).content | ConvertFrom-Json | Select-Object -ExpandProperty instances
+        $Billing = (Invoke-WebRequest -Method get -Uri ($MorphURL + 'api/billing/instances') -Headers $Header).content | ConvertFrom-Json | Select-Object -ExpandProperty billingInfo | Select-Object -ExpandProperty instances
+        foreach ($Instance in $Instances){
+            $instanceSum = ($instanceSum + ($Billing | Where-Object instanceId -eq $instance.id | Select-Object -ExpandProperty cost))
+        }
+        $ratio = ($instanceSum / $budget.maxPrice)
+        If ($ratio -gt $warningThreshold) {
+            write-host "Alert: Group `"$($Group.Name)`" is at $([math]::Round($ratio,2))" -ForegroundColor Yellow
+            
+            ### Send Email ###
+            #Send-MailMessage -To email@email.com -Subject 'Cloud Spend Near Quota' -Body "Attention: The Group `"$($Group.Name)`" is currently at $([math]::Round($ratio,2)).  This exceeds the warning threshold."
+        }
+    }
+}
+
+exit 0
+EOFSCRIBE
+  dateCreated = "2022-12-07T15:54:05.000Z"
+  lastUpdated = "2022-12-07T15:54:05.000Z"
+}
