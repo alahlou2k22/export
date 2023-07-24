@@ -1,0 +1,10 @@
+resource "option-type" "azserName" {
+  code = "azserName"
+  name = "Azure Server name"
+  uuid = "948f81fc-9293-42ce-9b7a-3fd5f89add2e"
+  exportMeta = true
+  fieldContext = "config.customOptions"
+  fieldLabel = "Server Name"
+  fieldName = "azserName"
+  required = true
+}

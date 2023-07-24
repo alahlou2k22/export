@@ -1,0 +1,5 @@
+resource "task-set-task" "44eb53e1-cb4b-4310-902e-c24c9c4e9420" {
+  uuid = "44eb53e1-cb4b-4310-902e-c24c9c4e9420"
+  task = { code = "azurecreatergCongphase" }
+  taskPhase = "operation"
+}

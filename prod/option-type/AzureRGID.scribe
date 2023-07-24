@@ -1,0 +1,11 @@
+resource "option-type" "AzureRGID" {
+  code = "AzureRGID"
+  name = "AzureRGID"
+  uuid = "b8b98ebb-e2e1-4db5-83bd-b8ec394617b6"
+  displayOrder = 1
+  exportMeta = true
+  fieldContext = "config.customOptions"
+  fieldName = "AzureRGID"
+  labels = [ "AzureRGID" ]
+  type = "hidden"
+}

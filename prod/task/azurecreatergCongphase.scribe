@@ -1,0 +1,21 @@
+resource "task" "azurecreatergCongphase" {
+  code = "azurecreatergCongphase"
+  name = "azurecreatergCongphase"
+  uuid = "a431995e-5c48-4194-a484-378bef49f133"
+  dateCreated = "2023-05-16T11:10:28.000Z"
+  executeTarget = "local"
+  labels = [ "RG", "azure", "create dedicated NSG" ]
+  lastUpdated = "2023-05-25T07:54:06.000Z"
+  options = [
+    { optionType = { code = "pythonBinary" }, value = "python3.8" },
+    {
+      optionType = { code = "pythonAdditionalPackages" }
+      value = "requests"
+    },
+    {
+      content = { uuid = "19bd86b9-135d-4a56-8696-d88071d72c9e" }
+      optionType = { code = "pythonScript" }
+    }
+  ]
+  taskType = { code = "jythonTask" }
+}

@@ -1,0 +1,10 @@
+resource "task-set" "azuretestAIO" {
+  name = "azuretestAIO"
+  uuid = "5020ad87-3546-4872-98b2-1749dee99930"
+  dateCreated = "2023-05-22T14:32:35.000Z"
+  labels = [ "exported" ]
+  lastUpdated = "2023-07-24T17:22:41.000Z"
+  optionTypes = [ { code = "azserName" }, { code = "AzureRGID" } ]
+  taskSetTasks = [ { uuid = "44eb53e1-cb4b-4310-902e-c24c9c4e9420" } ]
+  taskSetType = "operation"
+}

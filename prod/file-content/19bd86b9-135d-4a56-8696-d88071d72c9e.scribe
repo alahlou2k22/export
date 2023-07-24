@@ -1,0 +1,68 @@
+resource "file-content" "19bd86b9-135d-4a56-8696-d88071d72c9e" {
+  uuid = "19bd86b9-135d-4a56-8696-d88071d72c9e"
+  content = <<EOFSCRIBE
+import json, requests
+
+MORPHEUS_VERIFY_SSL_CERT = False
+MORPHEUS_HOST = morpheus['morpheus']['applianceHost']
+MORPHEUS_TENANT_TOKEN = morpheus['morpheus']['apiAccessToken']
+AZURE_VMName = morpheus['customOptions']['azserName']
+
+print(MORPHEUS_TENANT_TOKEN)
+print(MORPHEUS_HOST)
+print(AZURE_VMName)
+MORPHEUS_HEADERS = {"Content-Type":"application/json","Accept":"application/json","Authorization": "Bearer " + MORPHEUS_TENANT_TOKEN} 
+
+url1 = 'https://%s/api/zones/14/resource-pools' % (MORPHEUS_HOST )
+
+payload = {"resourcePool": {
+        "defaultPool": False,
+        "defaultImage": False,
+        "active": True,
+        "visibility": "private",
+        "inventory": True,
+        "config": {"tenancy": "default"},
+        "resourcePermissions": {
+            "all": True,
+            "allPlans": True
+        },
+        "name": AZURE_VMName
+    }}
+print(url1)
+
+response1 = requests.post(url1, json=payload, headers=MORPHEUS_HEADERS, verify=MORPHEUS_VERIFY_SSL_CERT)
+data1 = response1.json()
+resourcePoolId = data1['resourcePool']['id']
+print(resourcePoolId)
+print(response1.text)
+
+
+url2 = "https://%s/api/security-groups" % (MORPHEUS_HOST)
+
+payload2 = {"securityGroup": {
+        "name": AZURE_VMName,
+        "zoneId": "14",
+        "customOptions": {"resourceGroup": AZURE_VMName},
+        "resourcePermissions": {
+            "all": True,
+            "allPlans": True
+        }
+    }}
+
+response2 = requests.post(url2, json=payload2, headers=MORPHEUS_HEADERS, verify=MORPHEUS_VERIFY_SSL_CERT)
+
+print(response2.text)
+
+# Refresh the azure cloud to load new created objects in Morpheus 
+url3 = 'https://%s/api/zones/14/refresh' % (MORPHEUS_HOST)
+
+response3 = requests.post(url3,  headers=MORPHEUS_HEADERS, verify=MORPHEUS_VERIFY_SSL_CERT)
+
+print(response3.text)
+
+
+
+EOFSCRIBE
+  dateCreated = "2023-05-16T11:10:28.000Z"
+  lastUpdated = "2023-06-06T09:22:36.000Z"
+}
